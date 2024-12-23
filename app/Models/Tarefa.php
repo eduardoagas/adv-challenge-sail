@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tarefa extends Model
 {
-    protected $fillable = ['titulo', 'descricao', 'concluida', 'data_de_conclusao', 'criador_user_id'];
+    protected $fillable = ['titulo', 'descricao', 'concluida', 'data_de_conclusao', 'criador_user_id', 'categoria_id'];
 
     public function user()
     {

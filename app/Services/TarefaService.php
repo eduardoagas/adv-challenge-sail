@@ -10,7 +10,10 @@ class TarefaService
 {
     protected $tarefaRepository;
 
-    public function __construct(TarefaRepository $tarefaRepository) {}
+    public function __construct(TarefaRepository $tarefaRepository)
+    {
+        $this->tarefaRepository = $tarefaRepository; //obrigatorio
+    }
 
     public function salvar(array $data)
     {
@@ -20,11 +23,6 @@ class TarefaService
     public function listarTarefasDoUsuario(int $userId): array
     {
         return $this->tarefaRepository->getTarefasPorUsuario($userId);
-    }
-
-    public function buscar(array $filtros = []): array
-    {
-        return $this->tarefaRepository->getTarefas($filtros);
     }
 
     public function atualizar(Tarefa $tarefa, array $dados)

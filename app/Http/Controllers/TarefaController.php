@@ -52,8 +52,13 @@ class TarefaController extends Controller
     public function salvar(TarefaRequest $request)
     {
         $dados = $request->validated();
-        $tarefa = $this->tarefaService->salvar($dados);
-        return response()->json($tarefa, 201);
+        try {
+            $this->tarefaService->salvar($dados);
+            return redirect()->route('tarefas.nova');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return response()->json(['error' => 'Erro ao criar tarefa'], 500);
+        }
     }
 
     public function atualizar(TarefaRequest $request, Tarefa $tarefa)

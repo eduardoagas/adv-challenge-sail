@@ -27,7 +27,7 @@ class TarefaRequest extends FormRequest
             //'categoria_id' => 'required|integer|exists:categorias,id',
             'categoria_id' => 'required|integer',
             'concluida' => 'nullable|boolean',
-            'criador_user_id' => 'required|integer|exists:user,id',
+            'criador_user_id' => 'required|integer|exists:users,id',
         ];
     }
 

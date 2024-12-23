@@ -9,7 +9,10 @@ class CategoriaService
 {
     protected $categoriaRepository;
 
-    public function __construct(CategoriaRepository $categoriaRepository) {}
+    public function __construct(CategoriaRepository $categoriaRepository)
+    {
+        $this->categoriaRepository = $categoriaRepository;
+    }
 
     public function getAllCategorias(): array
     {

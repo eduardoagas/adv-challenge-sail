@@ -12,19 +12,19 @@ class CategoriaRepository
         return Categoria::all();
     }
 
-    public function savecategoria(array $dados)
+    public function saveCategoria(array $dados)
     {
         $categoria = Categoria::create($dados);
         return $categoria;
     }
 
-    public function updateTarefa(Categoria $categoria, array $dados)
+    public function updateCategoria(Categoria $categoria, array $dados)
     {
         $categoria->update($dados);
         return $categoria;
     }
 
-    public function deleteTarefa(Categoria $categoria)
+    public function deleteCategoria(Categoria $categoria)
     {
         $categoria->delete();
     }
