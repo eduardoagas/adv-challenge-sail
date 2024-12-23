@@ -7,6 +7,11 @@ export interface User {
     email_verified_at?: string;
 }
 
+export interface Tarefa{
+    titulo: string;
+    descricao?: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
