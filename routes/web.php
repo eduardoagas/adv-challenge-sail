@@ -22,9 +22,10 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::prefix('tarefas')->group(function () {
-        Route::get("nova_tarefa", [TarefaController::class, "criar"])->name('tarefas.nova'); //prefixo tarefas já incluso no bootstrap inclusive para o ziggy
+        Route::get("nova_tarefa", [TarefaController::class, "criar"])->name('tarefas.nova'); 
         Route::get("listar_tarefas", [TarefaController::class, "listar"]);
         Route::get("editar_tarefas", [TarefaController::class, "editar"]);
+        Route::post("salvar_tarefa", [TarefaController::class, 'salvar'])->name('tarefas.salvar');
     });
     Route::prefix('categorias')->group(function () {
         Route::get("nova_categoria", [CategoriaController::class, "criar"]);

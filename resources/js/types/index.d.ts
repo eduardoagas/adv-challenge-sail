@@ -10,6 +10,8 @@ export interface User {
 export interface Tarefa{
     titulo: string;
     descricao?: string;
+    categoria_id: integer;
+    criador_user_id: integer;
 }
 
 export type PageProps<
