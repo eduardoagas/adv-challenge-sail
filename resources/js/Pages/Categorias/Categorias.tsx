@@ -6,7 +6,7 @@ import Modal from '../Components/Modal';
 import { Categoria, PageProps } from '@/types';
 
 export default function Categorias({ auth, categorias }: PageProps<{ categorias: Categoria[] }>) {
-    const { data, setData, post, processing } = useForm<Categoria>({
+    const { data, setData, post, processing } = useForm<Partial<Categoria>>({
         nome: '', // Provide an initial value
         criador_user_id: auth.user.id,
     });
@@ -57,7 +57,7 @@ export default function Categorias({ auth, categorias }: PageProps<{ categorias:
                             <ul className="space-y-4">
                                 {categorias.map((categoria) => (
                                     <li
-                                        key={categoria.nome}
+                                        key={categoria.id}
                                         className="border-b pb-2 text-gray-700 dark:text-gray-300"
                                     >
                                         {categoria.nome}
