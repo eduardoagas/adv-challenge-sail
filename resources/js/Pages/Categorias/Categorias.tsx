@@ -49,7 +49,7 @@ export default function Categorias({ auth, categorias }: PageProps<{ categorias:
                                 <h1 className="text-2xl font-bold">Lista de Categorias</h1>
                                 <button
                                     onClick={() => setShowModal(true)}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                    className="bg-indigo-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
                                 >
                                     + Adicionar
                                 </button>
