@@ -6,7 +6,7 @@ import Modal from '../Components/Modal';
 import { Categoria, PageProps } from '@/types';
 
 export default function Categorias({ auth, categorias }: PageProps<{ categorias: Categoria[] }>) {
-    const { data, setData, post, processing } = useForm<Partial<Categoria>>({
+    const { data, setData, post, processing } = useForm<Categoria>({
         nome: '', // Provide an initial value
         criador_user_id: auth.user.id,
     });
@@ -17,7 +17,6 @@ export default function Categorias({ auth, categorias }: PageProps<{ categorias:
 
 
         post(route('categorias.salvar'), {
-            data: { data },
             onSuccess: () => {
                 setShowModal(false); // Close modal after success
                 setData({ nome: '', criador_user_id: auth.user.id }); // Reset input field

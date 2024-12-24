@@ -15,7 +15,6 @@ export interface Tarefa{
 }
 
 interface Categoria {
-    id: number;
     criador_user_id: integer;
     nome: string;
 }

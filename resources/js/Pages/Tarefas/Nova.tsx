@@ -16,7 +16,6 @@ export default function Criar({ auth, categorias }: PageProps<{ categorias: { id
     const submit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
         post(route('tarefas.salvar'), {
-            data: { data },
             onSuccess: () => { },
             onError: () => {
                 // console.log
