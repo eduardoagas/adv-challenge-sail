@@ -57,7 +57,7 @@ export default function Categorias({ auth, categorias }: PageProps<{ categorias:
                             <ul className="space-y-4">
                                 {categorias.map((categoria) => (
                                     <li
-                                        key={categoria.id}
+                                        key={categoria.nome}
                                         className="border-b pb-2 text-gray-700 dark:text-gray-300"
                                     >
                                         {categoria.nome}
