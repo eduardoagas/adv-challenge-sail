@@ -42,6 +42,14 @@ export default function Authenticated({
                                     Tarefas
                                 </NavLink>
                             </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('categorias.listar')}
+                                    active={route().current('categorias.listar')}
+                                >
+                                    Categorias
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">

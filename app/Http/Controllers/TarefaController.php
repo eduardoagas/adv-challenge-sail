@@ -24,9 +24,9 @@ class TarefaController extends Controller
 
     public function criar()
     {
-        //$categorias = $this->categoriaService->getAllCategorias();
+        $categorias = $this->categoriaService->getAllCategorias();
         return Inertia::render('Tarefas/Nova', [
-            //'categorias' => $categorias,
+            'categorias' => $categorias,
         ]);
     }
 

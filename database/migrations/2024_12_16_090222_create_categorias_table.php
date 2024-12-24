@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->foreignId('criador_user_id'); //criador da categoria
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Cada categoria pertence a um usuário
+            //$table->foreignId('user_id')->constrained()->onDelete('cascade'); // Cada categoria pertence a um usuário
             $table->timestamps();
         });
     }

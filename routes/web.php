@@ -29,8 +29,9 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('categorias')->group(function () {
         Route::get("nova_categoria", [CategoriaController::class, "criar"]);
-        Route::get("listar_categorias", [CategoriaController::class, "listar"]);
+        Route::get("listar_categorias", [CategoriaController::class, "listar"])->name('categorias.listar');
         Route::get("editar_categorias", [CategoriaController::class, "editar"]);
+        Route::post("salvar_categoria", [CategoriaController::class, 'salvar'])->name('categorias.salvar');
     });
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

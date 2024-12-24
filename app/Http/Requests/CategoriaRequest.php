@@ -11,7 +11,7 @@ class CategoriaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class CategoriaRequest extends FormRequest
     {
         return [
             'nome' => 'required|string|max:255',
-            'criador_user_id' => 'required|integer|exists:user,id',
+            'criador_user_id' => 'required|integer|exists:users,id',
         ];
     }
 

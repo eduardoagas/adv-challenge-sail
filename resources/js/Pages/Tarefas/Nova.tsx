@@ -1,15 +1,18 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { Tarefa, PageProps } from '@/types';
 import { useState } from 'react';
-import PrimaryButton from './Components/PrimaryButton';
+import PrimaryButton from '../Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
 
-export default function criar({ auth }: PageProps<{}>) {
+export default function criar({ auth, categorias }: PageProps<{ categorias: { id: number; nome: string }[] }>) {
     const { data, post, processing, recentlySuccessful } = useForm<Tarefa>();
-    const [title, setTitle] = useState(""); //see if necessary
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const submit = (e: { preventDefault: () => void; }) => {
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Estado para a categoria selecionada
+    const [v_errors, setErrors] = useState<any>({});
+
+    const submit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
         const validation = validateFormData();
         if (validation.hasErrors) {
@@ -19,24 +22,23 @@ export default function criar({ auth }: PageProps<{}>) {
         const add: Tarefa = {
             titulo: title,
             descricao: description,
-            categoria_id: 1,
+            categoria_id: selectedCategory!,
             criador_user_id: auth.user.id,
-        }
+        };
         post(route('tarefas.salvar', { ...data, ...add }));
-
     };
-
-    //VALIDATION & SUBMIT
-    const [v_errors, setErrors] = useState<any>({});
 
     const validateFormData = () => {
         let hasErrors = false;
         const newErrors: any = {};
 
-        // Validate each property
-        if ((title == null || title == '')) {
+        if (!title) {
             hasErrors = true;
             newErrors.label = 'A tarefa deve possuir um título!';
+        }
+        if (!selectedCategory) {
+            hasErrors = true;
+            newErrors.category = 'Você deve selecionar uma categoria!';
         }
 
         return { hasErrors, errors: newErrors };
@@ -52,15 +54,7 @@ export default function criar({ auth }: PageProps<{}>) {
         >
             <Head title="Tarefas" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            Tarefas!
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div className="container mx-auto p-4">
                 <h1 className="text-2xl font-bold mb-4">Criar Nova Tarefa</h1>
                 <form onSubmit={submit} className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 px-8 pt-6 pb-8 mb-4">
@@ -82,6 +76,29 @@ export default function criar({ auth }: PageProps<{}>) {
                         />
                     </div>
 
+                    <div className="mb-4">
+                        <label
+                            htmlFor="categoria"
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                        >
+                            Categoria
+                        </label>
+                        <select
+                            id="categoria"
+                            name="categoria"
+                            value={selectedCategory || ''}
+                            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                            <option value="" disabled>Selecione uma categoria</option>
+                            {categorias.map((categoria) => (
+                                <option key={categoria.id} value={categoria.id}>
+                                    {categoria.nome}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div className="mb-6">
                         <label
                             htmlFor="description"
@@ -100,14 +117,22 @@ export default function criar({ auth }: PageProps<{}>) {
                         />
                     </div>
 
-                    <div className="flex-col pb-20">
-                        <div className="flex items-center justify-center">
-                            <PrimaryButton disabled={processing}>Salvar</PrimaryButton></div>
-                        {v_errors.label && <div className="flex items-center justify-center pt-4">
-                            {/* Display validation errors if any */}
 
-                            <div style={{ color: 'red' }}>{v_errors.label}</div>
-                            {/* Add more error displays for other properties... */}</div>}
+
+                    <div className="flex-col pb-24">
+                        <div className="flex items-center justify-center">
+                            <PrimaryButton disabled={processing}>Salvar</PrimaryButton>
+                        </div>
+                        {v_errors.label && (
+                            <div className="mt-4 text-red-600 text-sm opacity-95 border border-red-300 rounded px-2 py-1 bg-red-50">
+                                <div style={{ color: 'red' }}>{v_errors.label}</div>
+                            </div>
+                        )}
+                        {v_errors.category && (
+                            <div className="mt-1 text-red-600 text-sm opacity-95 border border-red-300 rounded px-2 py-1 bg-red-50">
+                                <div style={{ color: 'red' }}>{v_errors.category}</div>
+                            </div>
+                        )}
                         <Transition
                             show={recentlySuccessful}
                             enter="transition ease-in-out"

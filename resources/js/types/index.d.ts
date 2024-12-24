@@ -14,6 +14,12 @@ export interface Tarefa{
     criador_user_id: integer;
 }
 
+interface Categoria {
+    id: number;
+    criador_user_id: integer;
+    nome: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {

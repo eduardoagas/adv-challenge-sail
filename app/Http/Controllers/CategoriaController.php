@@ -19,18 +19,18 @@ class CategoriaController extends Controller
         $this->categoriaService = $categoriaService;
     }
 
-    public function criar()
+   /* public function criar()
     {
         //$categorias = $this->categoriaService->getAllCategorias();
         return Inertia::render('Categorias/Nova', [
             //'categorias' => $categorias,
         ]);
-    }
+    }*/
 
     public function listar()
     {
         $categorias = $this->categoriaService->getAllCategorias();
-        return Inertia::render('Categorias/Lista', [
+        return Inertia::render('Categorias/Categorias', [
             'categorias' => $categorias,
         ]);
     }
@@ -43,8 +43,15 @@ class CategoriaController extends Controller
     public function salvar(CategoriaRequest $request)
     {
         $dados = $request->validated();
-        $categoria = $this->categoriaService->salvar($dados);
-        return response()->json($categoria, 201);
+        
+
+        try {
+            $this->categoriaService->salvar($dados);
+            return redirect()->route('categorias.listar');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return response()->json(['error' => 'Erro ao criar tarefa'], 500);
+        }
     }
 
     public function atualizar(Request $request, Categoria $categoria)
