@@ -5,43 +5,22 @@ import { useState } from 'react';
 import PrimaryButton from '../Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
 
-export default function criar({ auth, categorias }: PageProps<{ categorias: { id: number; nome: string }[] }>) {
-    const { data, post, processing, recentlySuccessful } = useForm<Tarefa>();
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Estado para a categoria selecionada
-    const [v_errors, setErrors] = useState<any>({});
+export default function Criar({ auth, categorias }: PageProps<{ categorias: { id: number; nome: string }[] }>) {
+    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<Tarefa>({
+        titulo: '',
+        descricao: '',
+        categoria_id: null,
+        criador_user_id: auth.user.id,
+    });
 
     const submit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        const validation = validateFormData();
-        if (validation.hasErrors) {
-            setErrors(validation.errors);
-            return;
-        }
-        const add: Tarefa = {
-            titulo: title,
-            descricao: description,
-            categoria_id: selectedCategory!,
-            criador_user_id: auth.user.id,
-        };
-        post(route('tarefas.salvar', { ...data, ...add }));
-    };
-
-    const validateFormData = () => {
-        let hasErrors = false;
-        const newErrors: any = {};
-
-        if (!title) {
-            hasErrors = true;
-            newErrors.label = 'A tarefa deve possuir um título!';
-        }
-        if (!selectedCategory) {
-            hasErrors = true;
-            newErrors.category = 'Você deve selecionar uma categoria!';
-        }
-
-        return { hasErrors, errors: newErrors };
+        post(route('tarefas.salvar'), {
+            onSuccess: () => { },
+            onError: () => {
+                // console.log
+            },
+        });
     };
 
     return (
@@ -54,40 +33,40 @@ export default function criar({ auth, categorias }: PageProps<{ categorias: { id
         >
             <Head title="Tarefas" />
 
-
             <div className="container mx-auto p-4">
                 <h1 className="text-2xl font-bold mb-4">Criar Nova Tarefa</h1>
                 <form onSubmit={submit} className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 px-8 pt-6 pb-8 mb-4">
                     <div className="mb-4">
                         <label
-                            htmlFor="title"
+                            htmlFor="titulo"
                             className="block text-gray-700 text-sm font-bold mb-2"
                         >
                             Título
                         </label>
                         <input
                             type="text"
-                            id="title"
-                            name="title"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            id="titulo"
+                            name="titulo"
+                            value={data.titulo}
+                            onChange={(e) => setData('titulo', e.target.value)}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             placeholder="Título para a nova tarefa"
                         />
+                        {errors.titulo && <div className="text-red-600 text-sm">{errors.titulo}</div>}
                     </div>
 
                     <div className="mb-4">
                         <label
-                            htmlFor="categoria"
+                            htmlFor="categoria_id"
                             className="block text-gray-700 text-sm font-bold mb-2"
                         >
                             Categoria
                         </label>
                         <select
-                            id="categoria"
-                            name="categoria"
-                            value={selectedCategory || ''}
-                            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+                            id="categoria_id"
+                            name="categoria_id"
+                            value={data.categoria_id || ''}
+                            onChange={(e) => setData('categoria_id', Number(e.target.value))}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         >
                             <option value="" disabled>Selecione uma categoria</option>
@@ -97,42 +76,31 @@ export default function criar({ auth, categorias }: PageProps<{ categorias: { id
                                 </option>
                             ))}
                         </select>
+                        {errors.categoria_id && <div className="text-red-600 text-sm">{errors.categoria_id}</div>}
                     </div>
 
                     <div className="mb-6">
                         <label
-                            htmlFor="description"
+                            htmlFor="descricao"
                             className="block text-gray-700 text-sm font-bold mb-2"
                         >
                             Descrição
                         </label>
                         <textarea
-                            id="description"
-                            name="description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            id="descricao"
+                            name="descricao"
+                            value={data.descricao}
+                            onChange={(e) => setData('descricao', e.target.value)}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             placeholder="Descrição da tarefa"
                             rows={4}
                         />
                     </div>
 
-
-
                     <div className="flex-col pb-24">
                         <div className="flex items-center justify-center">
                             <PrimaryButton disabled={processing}>Salvar</PrimaryButton>
                         </div>
-                        {v_errors.label && (
-                            <div className="mt-4 text-red-600 text-sm opacity-95 border border-red-300 rounded px-2 py-1 bg-red-50">
-                                <div style={{ color: 'red' }}>{v_errors.label}</div>
-                            </div>
-                        )}
-                        {v_errors.category && (
-                            <div className="mt-1 text-red-600 text-sm opacity-95 border border-red-300 rounded px-2 py-1 bg-red-50">
-                                <div style={{ color: 'red' }}>{v_errors.category}</div>
-                            </div>
-                        )}
                         <Transition
                             show={recentlySuccessful}
                             enter="transition ease-in-out"
@@ -140,7 +108,7 @@ export default function criar({ auth, categorias }: PageProps<{ categorias: { id
                             leave="transition ease-in-out"
                             leaveTo="opacity-0"
                         >
-                            <p className="text-sm text-gray-600">Saved.</p>
+                            <p className="text-sm text-gray-600">Salvo com sucesso!</p>
                         </Transition>
                     </div>
                 </form>
