@@ -48,7 +48,7 @@ class User extends Authenticatable
     
     public function tarefas()
     {
-        return $this->hasMany(Tarefa::class);
+        return $this->belongsToMany(Tarefa::class, 'tarefa_users', 'user_id', 'tarefa_id');
     }
 
     public function tarefas_criadas()

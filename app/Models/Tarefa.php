@@ -15,7 +15,7 @@ class Tarefa extends Model
     
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'tarefa_users', 'tarefa_id', 'user_id');
     }
 
     public function categorias()

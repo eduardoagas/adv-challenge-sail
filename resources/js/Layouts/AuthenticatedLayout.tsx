@@ -44,6 +44,14 @@ export default function Authenticated({
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
+                                    href={route('tarefas.listar')}
+                                    active={route().current('tarefas.listar')}
+                                >
+                                    Listar Tarefas
+                                </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
                                     href={route('categorias.listar')}
                                     active={route().current('categorias.listar')}
                                 >

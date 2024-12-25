@@ -32,9 +32,11 @@ class TarefaController extends Controller
 
     public function listar()
     {
-        $tarefas = $this->tarefaService->listarTarefasDoUsuario(auth()->id);
-        return Inertia::render('Tarefas/Lista', [
+        $tarefas = $this->tarefaService->listarTarefasDoUsuario(auth()->id());
+        $categorias = $this->categoriaService->getAllCategorias();
+        return Inertia::render('Tarefas/Tarefas', [
             'tarefas' => $tarefas,
+            'categorias' => $categorias,
         ]);
     }
 

@@ -6,7 +6,7 @@ import PrimaryButton from '../Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
 
 export default function Criar({ auth, categorias }: PageProps<{ categorias: { id: number; nome: string }[] }>) {
-    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<Tarefa>({
+    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<Partial<Tarefa>>({
         titulo: '',
         descricao: '',
         categoria_id: null,

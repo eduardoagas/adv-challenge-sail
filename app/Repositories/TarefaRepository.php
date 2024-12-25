@@ -44,6 +44,7 @@ class TarefaRepository
     public function saveTarefa(array $dados)
     {
         $tarefa = Tarefa::create($dados);
+        $tarefa->users()->attach(auth()->id());
         return $tarefa;
     }
 

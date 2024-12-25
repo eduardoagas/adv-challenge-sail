@@ -8,6 +8,7 @@ export interface User {
 }
 
 export interface Tarefa{
+    id: number;
     titulo: string;
     descricao?: string;
     categoria_id: integer;

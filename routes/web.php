@@ -22,8 +22,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::prefix('tarefas')->group(function () {
-        Route::get("nova_tarefa", [TarefaController::class, "criar"])->name('tarefas.nova'); 
-        Route::get("listar_tarefas", [TarefaController::class, "listar"]);
+        Route::get("nova_tarefa", [TarefaController::class, "criar"])->name('tarefas.nova');
+        Route::get("listar_tarefas", [TarefaController::class, "listar"])->name('tarefas.listar');
         Route::get("editar_tarefas", [TarefaController::class, "editar"]);
         Route::post("salvar_tarefa", [TarefaController::class, 'salvar'])->name('tarefas.salvar');
     });
