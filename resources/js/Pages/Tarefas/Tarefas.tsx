@@ -1,17 +1,62 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PrimaryButton from '../Components/PrimaryButton';
 import Modal from '../Components/Modal';
 import { Tarefa, PageProps } from '@/types';
 import { Transition } from '@headlessui/react';
 
 export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categorias: { id: number; nome: string }[], tarefas: Tarefa[] }>) {
-    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<Partial<Tarefa>>({
+    const { delete: destroy, data, setData, post, processing, errors, recentlySuccessful } = useForm<Partial<Tarefa>>({
         titulo: '', // Provide an initial value
         criador_user_id: auth.user.id,
     });
+    const [filteredTarefas, setFilteredTarefas] = useState<Tarefa[]>(tarefas);
+    const [selectedTarefa, setSelectedTarefa] = useState<Tarefa | null>(null);
+    const [showTarefaModal, setShowTarefaModal] = useState(false);
+    const [sortConfig, setSortConfig] = useState<{ key: string, direction: 'asc' | 'desc' }>({ key: '', direction: 'asc' });
+
+    const handleSort = (key: keyof Tarefa) => {
+        const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+        setSortConfig({ key, direction });
+        setFilteredTarefas(prevState => {
+            const sortedTarefas = [...prevState];
+            sortedTarefas.sort((a, b) => {
+                if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
+                if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+            return sortedTarefas;
+        });
+    };
+
+    const filterByCategory = (categoriaId: number) => {
+        setFilteredTarefas(prevState => {
+            const sortedTarefas = [...prevState];
+
+            sortedTarefas.sort((a, b) => {
+                if (a.categoria_id === categoriaId && b.categoria_id !== categoriaId) return -1;
+                if (a.categoria_id !== categoriaId && b.categoria_id === categoriaId) return 1;
+                return a.categoria_id - b.categoria_id;
+            });
+
+            return sortedTarefas;
+        });
+    };
+
+    const markAsConcluded = (tarefa: Tarefa) => {
+        router.put(route('tarefas.concluir', tarefa.id), {}, {
+            onSuccess: () => {
+                const updatedTarefas = tarefas.map((t) =>
+                    t.id === tarefa.id ? { ...t, concluida: true } : t
+                );
+                setFilteredTarefas(updatedTarefas);
+            },
+        });
+    };
+
     const [showModal, setShowModal] = useState(false);
+
 
     const submit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -21,6 +66,7 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
             onSuccess: () => {
                 setShowModal(false); // Close modal after success
                 setData({ titulo: '', criador_user_id: auth.user.id }); // Reset input field
+                location.reload();
             },
             onError: (errors) => {
                 console.error("Failed to save the category:", errors); // Log errors to the console
@@ -41,10 +87,9 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
             }
         >
             <Head title="Tarefas" />
-
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+                    <div className="overflow-x-auto bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex justify-between items-center mb-4">
                                 <h1 className="text-2xl font-bold">Lista de Tarefas</h1>
@@ -55,20 +100,115 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
                                     + Adicionar
                                 </button>
                             </div>
-                            <ul className="space-y-4">
-                                {tarefas.map((tarefa) => (
-                                    <li
-                                        key={tarefa.id}
-                                        className="border-b pb-2 text-gray-700 dark:text-gray-300"
-                                    >
-                                        {tarefa.titulo}
-                                    </li>
-                                ))}
-                            </ul>
+                            <table className="border-separate min-w-full table-auto ">
+                                <thead>
+                                    <tr className="bg-gray-100 dark:bg-gray-700">
+                                        <th
+                                            className="w-[10%] px-4 py-2 cursor-pointer resize-y"
+                                            onClick={() => handleSort('concluida')}
+                                        >
+                                            Concluída
+                                        </th>
+                                        <th
+                                            className="w-[70%] px-4 py-2 cursor-pointer"
+                                            onClick={() => handleSort('titulo')}
+                                        >
+                                            Título
+                                        </th>
+                                        <th
+                                            className="w-[20%] px-4 py-2 cursor-pointer"
+                                            onClick={() => handleSort('categoria_id')}
+                                        >
+                                            Categoria
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredTarefas.map((tarefa) => (
+                                        <tr
+                                            key={tarefa.id}
+                                            className="border-b dark:border-gray-600"
+                                            onClick={() => {
+                                                setSelectedTarefa(tarefa);
+                                                setShowTarefaModal(true);
+                                            }}
+                                        >
+                                            <td className="px-4 py-2 text-center">
+                                                {tarefa.concluida ? (
+                                                    <span className=" text-green-500">✔️</span>
+                                                ) : (
+                                                    <span className="text-gray-500">Não</span>
+                                                )}
+                                            </td>
+                                            <td className="px-4 py-2">{tarefa.titulo}</td>
+                                            <td className="px-4 py-2">
+                                                <span
+                                                    className="text-blue-500 underline cursor-pointer"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        filterByCategory(tarefa.categoria_id!);
+                                                    }}
+                                                >
+                                                    {categorias.find((c) => c.id === tarefa.categoria_id)?.nome || 'Sem Categoria'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {showTarefaModal && selectedTarefa && (
+                <Modal closeModal={() => setShowTarefaModal(false)}>
+                    <div className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 px-8 pt-6 pb-8 mb-4 relative">
+                        <button
+                            onClick={() => setShowTarefaModal(false)}
+                            className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+                        >
+                            ✖️
+                        </button>
+                        <h2 className="text-xl font-bold">{selectedTarefa.titulo}</h2>
+                        <p className="my-4">{selectedTarefa.descricao}</p>
+                        <div className="flex justify-end space-x-2">
+                            <button
+                                className="bg-indigo-200 text-white px-4 py-2 rounded hover:bg-indigo-400"
+                                onClick={() => destroy(route('tarefas.excluir', selectedTarefa.id), {
+                                    onSuccess: () => {
+                                        setShowModal(false); // Close modal after success
+                                        location.reload();
+                                    },
+                                    onError: (errors) => {
+                                        console.error("Failed to delete the task:", errors); // Log errors to the console
+                                        //setErrors(errors); // Update a local error state if you want to display it
+                                    },
+                                    onFinish: () => {
+                                        console.log("Request finished"); // Optional: Add any cleanup actions
+                                    },
+                                })}
+                            >
+                                🗑 Excluir
+                            </button>
+                            <button
+                                className="bg-indigo-200 text-white px-4 py-2 rounded hover:bg-indigo-400"
+                                onClick={() => router.patch(route('tarefas.editar', selectedTarefa.id))}
+                            >
+                                ✏️ Editar
+                            </button>
+                            {!selectedTarefa.concluida && (
+                                <button
+                                    className="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-600"
+                                    onClick={() => markAsConcluded(selectedTarefa)}
+                                >
+                                    Marcar como concluída
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </Modal>
+            )}
 
             {showModal && (
                 <Modal closeModal={() => setShowModal(false)}>

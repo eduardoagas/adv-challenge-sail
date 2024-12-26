@@ -7,12 +7,13 @@ export interface User {
     email_verified_at?: string;
 }
 
-export interface Tarefa{
+export interface Tarefa {
     id: number;
     titulo: string;
     descricao?: string;
     categoria_id: integer;
     criador_user_id: integer;
+    concluida?: boolean;
 }
 
 interface Categoria {

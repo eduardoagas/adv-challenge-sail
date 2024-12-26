@@ -71,11 +71,16 @@ class TarefaController extends Controller
         return response()->json($tarefaAtualizada, 200);
     }
 
-    public function excluir(TarefaRequest $Request, Tarefa $tarefa)
+    public function excluir(Tarefa $tarefa)
     {
         Gate::authorize('excluir', $tarefa);
-        $this->tarefaService->excluir($tarefa);
-        return response()->json(['message' => 'Tarefa excluída com sucesso.'], 200);
+        try {
+            $this->tarefaService->excluir($tarefa);
+            return redirect()->route('tarefas.listar');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return response()->json(['error' => 'Erro ao excluir tarefa'], 500);
+        }
     }
 
     public function concluir(TarefaRequest $Request, Tarefa $tarefa)
