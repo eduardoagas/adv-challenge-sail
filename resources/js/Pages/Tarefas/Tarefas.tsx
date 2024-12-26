@@ -134,19 +134,15 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
                             />
                         </div>
 
-                        <div className="flex-col pb-24">
-                            <div className="flex items-center justify-center">
-                                <PrimaryButton disabled={processing}>Salvar</PrimaryButton>
-                            </div>
-                            <Transition
-                                show={recentlySuccessful}
-                                enter="transition ease-in-out"
-                                enterFrom="opacity-0"
-                                leave="transition ease-in-out"
-                                leaveTo="opacity-0"
+                        <div className="flex justify-end space-x-2">
+                            <button
+                                type="button"
+                                onClick={() => setShowModal(false)}
+                                className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
                             >
-                                <p className="text-sm text-gray-600">Salvo com sucesso!</p>
-                            </Transition>
+                                Cancelar
+                            </button>
+                            <PrimaryButton className='bg-indigo-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-400' disabled={processing}>Salvar</PrimaryButton>
                         </div>
                     </form>
                 </Modal>

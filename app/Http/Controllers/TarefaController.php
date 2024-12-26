@@ -56,7 +56,7 @@ class TarefaController extends Controller
         $dados = $request->validated();
         try {
             $this->tarefaService->salvar($dados);
-            return redirect()->route('tarefas.nova');
+            return redirect()->route('tarefas.listar');
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
             return response()->json(['error' => 'Erro ao criar tarefa'], 500);
