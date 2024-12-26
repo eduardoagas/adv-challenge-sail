@@ -7,7 +7,7 @@ import { Tarefa, PageProps } from '@/types';
 import { Transition } from '@headlessui/react';
 
 export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categorias: { id: number; nome: string }[], tarefas: Tarefa[] }>) {
-    const { delete: destroy, data, setData, post, processing, errors, recentlySuccessful } = useForm<Partial<Tarefa>>({
+    const { delete: destroy, data, put, setData, post, processing, errors, recentlySuccessful } = useForm<Partial<Tarefa>>({
         titulo: '', // Provide an initial value
         criador_user_id: auth.user.id,
     });
@@ -54,28 +54,38 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
             },
         });
     };
-
+    const [isEditing, setIsEditing] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
 
     const submit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
 
-
-        post(route('tarefas.salvar'), {
-            onSuccess: () => {
-                setShowModal(false); // Close modal after success
-                setData({ titulo: '', criador_user_id: auth.user.id }); // Reset input field
-                location.reload();
-            },
-            onError: (errors) => {
-                console.error("Failed to save the category:", errors); // Log errors to the console
-                //setErrors(errors); // Update a local error state if you want to display it
-            },
-            onFinish: () => {
-                console.log("Request finished"); // Optional: Add any cleanup actions
-            },
-        });
+        if (isEditing && selectedTarefa) {
+            put(route('tarefas.atualizar', selectedTarefa.id), {
+                onSuccess: () => {
+                    setShowModal(false);
+                    setIsEditing(false);
+                    location.reload(); // Reload to reflect changes
+                },
+                onError: (errors) => console.error("Failed to edit the task:", errors),
+            });
+        } else {
+            post(route('tarefas.salvar'), {
+                onSuccess: () => {
+                    setShowModal(false); // Close modal after success
+                    setData({ titulo: '', criador_user_id: auth.user.id }); // Reset input field
+                    location.reload();
+                },
+                onError: (errors) => {
+                    console.error("Failed to save the category:", errors); // Log errors to the console
+                    //setErrors(errors); // Update a local error state if you want to display it
+                },
+                onFinish: () => {
+                    console.log("Request finished"); // Optional: Add any cleanup actions
+                },
+            });
+        }
     };
 
     return (
@@ -193,7 +203,17 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
                             </button>
                             <button
                                 className="bg-indigo-200 text-white px-4 py-2 rounded hover:bg-indigo-400"
-                                onClick={() => router.patch(route('tarefas.editar', selectedTarefa.id))}
+                                onClick={() => {
+                                    setIsEditing(true);
+                                    setShowTarefaModal(false);
+                                    setData({
+                                        titulo: selectedTarefa?.titulo || '',
+                                        descricao: selectedTarefa?.descricao || '',
+                                        categoria_id: selectedTarefa?.categoria_id,
+                                        criador_user_id: selectedTarefa?.criador_user_id,
+                                    });
+                                    setShowModal(true); // Open the add/edit modal with pre-filled data
+                                }}
                             >
                                 ✏️ Editar
                             </button>
@@ -213,6 +233,7 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
             {showModal && (
                 <Modal closeModal={() => setShowModal(false)}>
                     <form onSubmit={submit} className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 px-8 pt-6 pb-8 mb-4">
+                        <h2 className="text-lg font-bold mb-4">{isEditing ? 'Editar Tarefa' : 'Nova Tarefa'}</h2>
                         <div className="mb-4">
                             <label
                                 htmlFor="titulo"
@@ -227,7 +248,7 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
                                 value={data.titulo}
                                 onChange={(e) => setData('titulo', e.target.value)}
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                placeholder="Título para a nova tarefa"
+                                placeholder="Título da tarefa"
                             />
                             {errors.titulo && <div className="text-red-600 text-sm">{errors.titulo}</div>}
                         </div>
@@ -277,7 +298,10 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
                         <div className="flex justify-end space-x-2">
                             <button
                                 type="button"
-                                onClick={() => setShowModal(false)}
+                                onClick={() => {
+                                    setShowModal(false);
+                                    setIsEditing(false);
+                                }}
                                 className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
                             >
                                 Cancelar

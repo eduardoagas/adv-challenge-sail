@@ -40,11 +40,6 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function editar()
-    {
-        return Inertia::render('Tarefas/Editar');
-    }
-
     /*public function buscar(QueryBuscaTarefaRequest $request)
     {
         $filtros = $request->validated();
@@ -67,8 +62,13 @@ class TarefaController extends Controller
     {
         Gate::authorize('editar', $tarefa);
         $dados = $request->validated();
-        $tarefaAtualizada = $this->tarefaService->atualizar($tarefa, $dados);
-        return response()->json($tarefaAtualizada, 200);
+        try {
+            $tarefaAtualizada = $this->tarefaService->atualizar($tarefa, $dados);
+            return redirect()->route('tarefas.listar');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return response()->json(['error' => 'Erro ao criar tarefa'], 500);
+        }
     }
 
     public function excluir(Tarefa $tarefa)

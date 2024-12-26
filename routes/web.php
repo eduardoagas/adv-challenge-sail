@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('tarefas')->group(function () {
         Route::get("nova_tarefa", [TarefaController::class, "criar"])->name('tarefas.nova');
         Route::get("listar_tarefas", [TarefaController::class, "listar"])->name('tarefas.listar');
-        Route::get("editar_tarefas", [TarefaController::class, "editar"]);
+        Route::put("editar_tarefa/{tarefa}", [TarefaController::class, "atualizar"])->name('tarefas.atualizar');
         Route::post("salvar_tarefa", [TarefaController::class, 'salvar'])->name('tarefas.salvar');
         Route::delete("excluir_tarefa/{tarefa}", [TarefaController::class, 'excluir'])->name('tarefas.excluir');
     });
