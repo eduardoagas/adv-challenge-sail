@@ -1,10 +1,14 @@
 # Lista de Tarefas
 
-Aplicação fullstack para manipular tarefas, desenvolvido para o desafio da ADVBOX.
+Aplicação fullstack para manipular tarefas, desenvolvida para o desafio da ADVBOX.
 
 ## Tecnologias Utilizadas
 
-Laravel 11 (Sail), PHP, React (Inertia e Typescript), PostgreSQL, Docker.
+- Laravel 11 (Sail)
+- PHP
+- React (Inertia e Typescript)
+- PostgreSQL
+- Docker.
 
 ## Guia de Instalação Local
 
