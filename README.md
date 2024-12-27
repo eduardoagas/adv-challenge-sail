@@ -23,52 +23,58 @@ Laravel 11 (Sail), PHP, React (Inertia e Typescript), PostgreSQL, Docker.
    ```
 
 2. Acesse o diretório clonado e rode o comando para instalar as dependências:
-```bash
-   composer install 
-   ```
+   
+    ```bash
+    composer install 
+    ```
    parâmetros úteis: --ignore-platform-reqs (sufixo) ; COMPOSER_PROCESS_TIMEOUT=1200 (prefixo)
 
 3. Substitua o arquivo `.env.example` na pasta application ao `.env` usando o comando:
-```bash
-   cp .env.example .env
-   ```
+   
+    ```bash
+    cp .env.example .env
+    ```
 
 4. Recomendação: defina o alias do sail.
-```bash
-alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
-```
+
+    ```bash
+    alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+    ```
 
 5. Na pasta da aplicação, inicie os contêineres do Docker:
+   
    ```bash
    sail up -d
    ```
 
 6. Gere uma chave para o .env da aplicação:
-```bash
-sail artisan key:generate
-   ```
+   
+    ```bash
+    sail artisan key:generate
+    ```
 
-7. Atualize o composer se necessário
+7.  Atualize o composer se necessário
 
    ```bash
    sail composer update
    ```
 
-8. instale as dependências do npm
+8.  instale as dependências do npm
 
-```bash
+    ```bash
    sail npm install
    ```
+
 9. Suba a aplicação para ser acessada pelo http:localhost usando
 
-```bash
+    ```bash
    sail npm run build
    ```
 
 9. Os testes automatizados podem ser rodados com
 
-```bash
-   sail artisan test
+    ```bash
+    sail artisan test
    ```
 
 
