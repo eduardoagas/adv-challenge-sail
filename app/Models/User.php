@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     public function tarefas_criadas()
     {
-        return $this->hasMany(Tarefa::class);
+        return $this->hasMany(Tarefa::class, 'criador_user_id');
     }
 
     public function categoria()

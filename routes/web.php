@@ -8,6 +8,8 @@ use App\Http\Controllers\TarefaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoriaController;
 
+
+
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('tarefas.listar'); // Redirect logged-in users to the tarefas.listar route
@@ -15,6 +17,14 @@ Route::get('/', function () {
 
     return redirect()->route('login'); // Redirect guests to the login page
 });
+
+Route::get('/dashboard', function () {
+    if (Auth::check()) {
+        return redirect()->route('tarefas.listar'); // Redirect logged-in users to the tarefas.listar route
+    }
+
+    return redirect()->route('login'); // Redirect guests to the login page
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {

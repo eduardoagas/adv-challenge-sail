@@ -11,7 +11,8 @@ class TarefaRepository
 
     public function getTarefasPorUsuario(int $userId): array
     {
-        return User::findOrFail($userId)->tarefas()->get()->toArray();
+        $tasks = User::findOrFail($userId)->tarefas_criadas()->get();
+        return $tasks->toArray();
     }
 
     /*public function getTarefas(array $filtros = [])
