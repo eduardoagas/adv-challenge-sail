@@ -93,4 +93,6 @@ A edição e exclusão de tarefas/categorias competem somente ao usuário criado
 Para a funcionalidade do Job para deletar tarefas após uma semana, deve-se configurar o cron
 no servidor, editando o crontab:
 
-* * * * * cd /caminho/para/sua/aplicacao && php artisan schedule:run >> /dev/null 2>&1
+    ```dev
+    * * * * * cd /caminho/para/sua/aplicacao && php artisan schedule:run >> /dev/null 2>&1
+    ```
