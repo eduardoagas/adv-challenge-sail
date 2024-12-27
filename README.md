@@ -71,11 +71,6 @@ sail artisan key:generate
    sail artisan test
    ```
 
-10. Suba a aplicação para ser acessada pelo http:localhost usando
-
-```bash
-   npm run build
-   ```
 
 ### Funcionalidades
 
@@ -89,3 +84,7 @@ O usuário pode acessar a lista completa de categorias clicando na aba categoria
 O usuário pode criar, editar e excluir categorias interagindo com a página listar_categorias.
 A edição e exclusão de tarefas/categorias competem somente ao usuário criador das mesmas.
 
+Para a funcionalidade do Job para deletar tarefas após uma semana, deve-se configurar o cron
+no servidor, editando o crontab:
+
+* * * * * cd /caminho/para/sua/aplicacao && php artisan schedule:run >> /dev/null 2>&1
