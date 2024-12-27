@@ -11,6 +11,7 @@ Laravel 11 (Sail), PHP, React (Inertia e Typescript), PostgreSQL, Docker.
 ### Pré-Requisitos
 
 - Docker instalado.
+- Composer.
 - Recomendação: SO Linux ou integração WSL2
 
 ### Instruções
@@ -21,70 +22,70 @@ Laravel 11 (Sail), PHP, React (Inertia e Typescript), PostgreSQL, Docker.
    git clone https://github.com/eduardoagas/adv-challenge-sail.git
    ```
 
-2. Instale o Composer caso necessário
-
+2. Acesse o diretório clonado e rode o comando para instalar as dependências:
 ```bash
-   curl -sS https://getcomposer.org/installer | php
+   composer install 
    ```
+   parâmetros úteis: --ignore-platform-reqs (sufixo) ; COMPOSER_PROCESS_TIMEOUT=1200 (prefixo)
 
-3. Rodar o comando para instalar as dependências.
-```bash
-   composer install --ignore-platform-reqs
-   ```
-
-4. Substitua o arquivo `.env.example` na pasta application ao `.env`.
+3. Substitua o arquivo `.env.example` na pasta application ao `.env` usando o comando:
 ```bash
    cp .env.example .env
    ```
 
-3. No arquivo `.env`, adicione a chave da API do WORDS API:
+4. Recomendação: defina o alias do sail.
+```bash
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+```
 
-   ```env
-   WORDS_API_KEY=
+5. Na pasta da aplicação, inicie os contêineres do Docker:
+   ```bash
+   sail up -d
    ```
 
-4. No terminal, volte ao root do diretório clonado e execute o comando:
+6. Gere uma chave para o .env da aplicação:
+```bash
+sail artisan key:generate
+   ```
+
+7. Atualize o composer se necessário
 
    ```bash
-   docker compose up --build -d
+   sail composer update
    ```
 
-5. Ainda no diretório clonado, use o comando abaixo para entrar no terminal do contêiner PHP:
-
-   ```bash
-   docker compose exec app bash
-   ```
-
-6. No terminal do contêiner, entre na pasta da aplicação Laravel:
-
-   ```bash
-   cd application
-   ```
-
-7. Execute o comando para instalar as dependências. Caso necessário, adicione o parâmetro `COMPOSER_PROCESS_TIMEOUT=1200`:
-
-   ```bash
-   composer install
-   ```
-8. Execute o comando para gerar as chaves do passport:
-    
-    ```bash
-    php artisan passport:keys
-    ```
-9. Execute o comando para gerar um personal acess para o passport:
-
-    ```bash
-    php artisan passport:client --personal --no-interaction
-    ```
-
-10. Execute o comando para importar as palavras:
-
-   ```bash
-   php artisan app:importar-palavras
-   ```
-
-11. Acesse a documentação na url da [Swagger UI](http://localhost:8000/api/documentation):
+8. instale as dependências do npm
 
 ```bash
-   http://localhost:8000/api/documentation
+   sail npm install
    ```
+9. Suba a aplicação para ser acessada pelo http:localhost usando
+
+```bash
+   sail npm run build
+   ```
+
+9. Os testes automatizados podem ser rodados com
+
+```bash
+   sail artisan test
+   ```
+
+10. Suba a aplicação para ser acessada pelo http:localhost usando
+
+```bash
+   npm run build
+   ```
+
+### Funcionalidades
+
+O usuário pode fazer login e se registrar pela tela de login.
+O usuário pode acessar a lista de tarefas que lhe estão atribuídas clicando na aba tarefas.
+O usuário pode criar, editar e marcar como concluídas as tarefas interagindo com a página listar_tarefas.
+O usuário pode acessar a descrição detalhada de cada tarefa clicando sobre o nome da mesma.
+O usuário pode ordenar por nome, conclusão e por categoria clicando sobre cada representativo
+na na tabela.
+O usuário pode acessar a lista completa de categorias clicando na aba categorias.
+O usuário pode criar, editar e excluir categorias interagindo com a página listar_categorias.
+A edição e exclusão de tarefas/categorias competem somente ao usuário criador das mesmas.
+

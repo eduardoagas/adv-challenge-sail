@@ -22,7 +22,5 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Tarefa::factory()->count(10)->create();
-        Categoria::factory()->count(10)->create();
     }
 }
