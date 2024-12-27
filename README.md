@@ -1,6 +1,6 @@
 # Lista de Tarefas
 
-Aplicação fullstack para manipular tarefas, desenvolvida para o desafio da ADVBOX.
+Aplicação fullstack para gerenciamento de tarefas, desenvolvida para o desafio da ADVBOX.
 
 ## Tecnologias Utilizadas
 
