@@ -22,14 +22,6 @@ class TarefaController extends Controller
         $this->categoriaService = $categoriaService;
     }
 
-    public function criar()
-    {
-        $categorias = $this->categoriaService->getAllCategorias();
-        return Inertia::render('Tarefas/Nova', [
-            'categorias' => $categorias,
-        ]);
-    }
-
     public function listar()
     {
         $tarefas = $this->tarefaService->listarTarefasDoUsuario(auth()->id());
@@ -39,12 +31,6 @@ class TarefaController extends Controller
             'categorias' => $categorias,
         ]);
     }
-
-    /*public function buscar(QueryBuscaTarefaRequest $request)
-    {
-        $filtros = $request->validated();
-        $tarefas = $this->tarefaService->buscar($filtros);
-    }*/
 
     public function salvar(TarefaRequest $request)
     {
