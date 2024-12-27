@@ -35,11 +35,6 @@ class CategoriaController extends Controller
         ]);
     }
 
-    public function editar()
-    {
-        return Inertia::render('Categorias/Editar');
-    }
-
     public function salvar(CategoriaRequest $request)
     {
         $dados = $request->validated();
@@ -54,19 +49,31 @@ class CategoriaController extends Controller
         }
     }
 
-    public function atualizar(Request $request, Categoria $categoria)
+    public function atualizar(CategoriaRequest $request, Categoria $categoria)
     {
         Gate::authorize('editar', $categoria);
         $dados = $request->validated();
-        $categoriaAtualizada = $this->categoriaService->atualizar($categoria, $dados);
-        return response()->json($categoriaAtualizada, 200);
+
+        try {
+            $categoriaAtualizada = $this->categoriaService->atualizar($categoria, $dados);
+            return redirect()->route('categorias.listar');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return response()->json(['error' => 'Erro ao editar tarefa'], 500);
+        }
     }
 
     public function excluir(Request $Request, Categoria $categoria)
     {
         Gate::authorize('excluir', $categoria);
-        $this->categoriaService->excluir($categoria);
-        return response()->json(['message' => 'Categoria excluída com sucesso.'], 200);
+
+        try {
+            $this->categoriaService->excluir($categoria);
+            return redirect()->route('categorias.listar');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return response()->json(['error' => 'Erro ao excluir tarefa'], 500);
+        }
     }
 
 }

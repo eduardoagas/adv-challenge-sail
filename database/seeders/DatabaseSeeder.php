@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Tarefa;
+use App\Models\Categoria;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,5 +23,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Tarefa::factory()->count(10)->create();
+        Categoria::factory()->count(10)->create();
     }
 }

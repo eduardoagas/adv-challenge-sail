@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('criador_user_id'); //criador da tarefa
             $table->string('titulo');
-            $table->string('descricao');
+            $table->text('descricao');
             $table->foreignId('categoria_id')->constrained()->onDelete('cascade'); //cada tarefa possui uma categoria
             $table->boolean('concluida')->default(false); // Status de tarefa concluída
             $table->timestamp('data_de_conclusao')->nullable();  // Data de conclusão

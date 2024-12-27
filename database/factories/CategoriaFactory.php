@@ -22,8 +22,8 @@ class CategoriaFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome' => $this->faker->word,  // A random word as the category name
-            'criador_user_id' => User::factory(),  // Assumes there's a User factory defined
+            'nome' => $this->faker->word,
+            'criador_user_id' => User::factory(),  
             'created_at' => now(),
             'updated_at' => now(),
         ];

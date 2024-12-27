@@ -22,7 +22,7 @@ class TarefasTest extends TestCase
         $response->assertInertia(
             fn(Assert $page) =>
             $page->has('tarefas')
-            ->where('tarefas.0.criador_user_id', $user->id)
+                ->where('tarefas.0.criador_user_id', $user->id)
                 ->where('tarefas.1.criador_user_id', $user->id)
                 ->where('tarefas.2.criador_user_id', $user->id)
         );
@@ -36,8 +36,8 @@ class TarefasTest extends TestCase
 
         $payload = [
             'titulo' => 'Título Atualizado',
-            'categoria_id' => $categoria->id,  // Add categoria_id
-            'criador_user_id' => $user->id     // Add criador_user_id
+            'categoria_id' => $categoria->id,
+            'criador_user_id' => $user->id
         ];
 
         $response = $this->actingAs($user)->put(route('tarefas.atualizar', $tarefa->id), $payload);
@@ -52,18 +52,18 @@ class TarefasTest extends TestCase
         $categoria = Categoria::factory()->create(); // Assuming a Categoria model exists
         $tarefa = Tarefa::factory()->create(['criador_user_id' => $user->id, 'categoria_id' => $categoria->id]);
 
-        // Test with only titulo field and missing other required fields
+
         $payload = [
             'titulo' => 'Título Atualizado',
         ];
 
-        // Send the update request
+
         $response = $this->actingAs($user)->put(route('tarefas.atualizar', $tarefa->id), $payload);
 
-        // Assert that the validation errors are present for 'categoria_id' and 'criador_user_id'
+
         $response->assertSessionHasErrors(['categoria_id', 'criador_user_id']);
 
-        // You can also assert specific error messages if you want
+
         $response->assertSessionHasErrors('categoria_id', 'A categoria é obrigatória.');
         $response->assertSessionHasErrors('criador_user_id', 'Usuário criador é obrigatória.');
     }

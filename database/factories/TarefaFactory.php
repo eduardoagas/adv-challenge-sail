@@ -24,7 +24,7 @@ class TarefaFactory extends Factory
     {
         return [
             'criador_user_id' => User::factory(),
-            'titulo' => $this->faker->sentence,
+            'titulo' => $this->faker->sentence(5),
             'descricao' => $this->faker->paragraph,
             'categoria_id' => Categoria::factory(),
             'concluida' => $this->faker->boolean,
