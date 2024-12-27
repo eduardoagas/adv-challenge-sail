@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\TarefaController;
@@ -8,21 +9,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoriaController;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    if (Auth::check()) {
+        return redirect()->route('tarefas.listar'); // Redirect logged-in users to the tarefas.listar route
+    }
+
+    return redirect()->route('login'); // Redirect guests to the login page
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::prefix('tarefas')->group(function () {
-        Route::get("nova_tarefa", [TarefaController::class, "criar"])->name('tarefas.nova');
+        //Route::get("nova_tarefa", [TarefaController::class, "criar"])->name('tarefas.nova');
         Route::get("listar_tarefas", [TarefaController::class, "listar"])->name('tarefas.listar');
         Route::put("editar_tarefa/{tarefa}", [TarefaController::class, "atualizar"])->name('tarefas.atualizar');
         Route::put("concluir_tarefa/{tarefa}", [TarefaController::class, "concluir"])->name('tarefas.concluir');

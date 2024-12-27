@@ -53,19 +53,19 @@ export default function DeleteUserForm({
         <section className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Delete Account
+                    Deletar Conta
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data
+                    {/*Once your account is deleted, all of its resources and data
                     will be permanently deleted. Before deleting your account,
                     please download any data or information that you wish to
-                    retain.
+                    retain.*/}
                 </p>
             </header>
 
             <DangerButton onClick={confirmUserDeletion}>
-                Delete Account
+                Deletar Conta
             </DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
@@ -84,14 +84,14 @@ export default function DeleteUserForm({
                     <div className="mt-6">
                         <InputLabel
                             htmlFor="password"
-                            value="Password"
+                            value="Senha"
                             className="sr-only"
                         />
 
                         <TextInput
                             id="password"
                             type="password"
-                            name="password"
+                            name="senha"
                             ref={passwordInput}
                             value={data.password}
                             onChange={(e) =>
@@ -110,11 +110,11 @@ export default function DeleteUserForm({
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
-                            Cancel
+                            Cancelar
                         </SecondaryButton>
 
                         <DangerButton className="ms-3" disabled={processing}>
-                            Delete Account
+                            Deletar conta
                         </DangerButton>
                     </div>
                 </form>
