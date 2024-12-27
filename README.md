@@ -89,7 +89,7 @@ Aplicação fullstack para gerenciamento de tarefas, desenvolvida para o desafio
 - O usuário pode criar, editar e marcar como concluídas as tarefas interagindo com a página listar_tarefas.
 - O usuário pode acessar a descrição detalhada de cada tarefa clicando sobre o nome da mesma.
 - O usuário pode ordenar por nome, conclusão e por categoria clicando sobre cada representativo
-na na tabela.
+na tabela.
 - O usuário pode acessar a lista completa de categorias clicando na aba categorias.
 - O usuário pode criar, editar e excluir categorias interagindo com a página listar_categorias.
 - A edição e exclusão de tarefas/categorias competem somente ao usuário criador das mesmas.
