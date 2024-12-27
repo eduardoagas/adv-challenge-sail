@@ -18,7 +18,7 @@ Laravel 11 (Sail), PHP, React (Inertia e Typescript), PostgreSQL, Docker.
 1. Abra o terminal e clone o repositório:
 
    ```bash
-   https://github.com/eduardoagas/adv-challenge-sail.git
+   git clone https://github.com/eduardoagas/adv-challenge-sail.git
    ```
 
 2. Instale o Composer caso necessário
@@ -29,13 +29,12 @@ Laravel 11 (Sail), PHP, React (Inertia e Typescript), PostgreSQL, Docker.
 
 3. Rodar o comando para instalar as dependências.
 ```bash
-   php composer.phar install
+   composer install --ignore-platform-reqs
    ```
 
-
-2. Substitua o arquivo `.env.example` na pasta application ao `.env`.
+4. Substitua o arquivo `.env.example` na pasta application ao `.env`.
 ```bash
-   https://github.com/eduardoagas/adv-challenge-sail.git
+   cp .env.example .env
    ```
 
 3. No arquivo `.env`, adicione a chave da API do WORDS API:
