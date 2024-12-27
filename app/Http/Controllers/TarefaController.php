@@ -67,7 +67,7 @@ class TarefaController extends Controller
             return redirect()->route('tarefas.listar');
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
-            return response()->json(['error' => 'Erro ao criar tarefa'], 500);
+            return response()->json(['error' => 'Erro ao editar tarefa'], 500);
         }
     }
 
@@ -83,13 +83,16 @@ class TarefaController extends Controller
         }
     }
 
-    public function concluir(TarefaRequest $Request, Tarefa $tarefa)
+    public function concluir(Tarefa $tarefa)
     {
-        $tarefaConcluida = $this->tarefaService->concluir($tarefa);
-
-        return response()->json([
-            'message' => 'Tarefa concluída com sucesso.',
-            'tarefa' => $tarefaConcluida
-        ], 200);
+        try {
+            $this->tarefaService->concluir($tarefa);
+            return redirect()->route('tarefas.listar');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return response()->json([
+                'message' => 'Tarefa concluída com sucesso.',
+            ], 200);
+        }
     }
 }

@@ -37,6 +37,6 @@ class TarefaService
 
     public function concluir(Tarefa $tarefa)
     {
-        return $this->tarefaRepository->atualizarStatus($tarefa, true);
+        return $this->tarefaRepository->atualizarStatus($tarefa);
     }
 }

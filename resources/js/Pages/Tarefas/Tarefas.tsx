@@ -45,12 +45,11 @@ export default function Tarefas({ auth, tarefas, categorias }: PageProps<{ categ
     };
 
     const markAsConcluded = (tarefa: Tarefa) => {
-        router.put(route('tarefas.concluir', tarefa.id), {}, {
+        put(route('tarefas.concluir', tarefa.id), {
             onSuccess: () => {
-                const updatedTarefas = tarefas.map((t) =>
-                    t.id === tarefa.id ? { ...t, concluida: true } : t
-                );
-                setFilteredTarefas(updatedTarefas);
+                setShowModal(false); // Close modal after success
+                //setData({ titulo: '', criador_user_id: auth.user.id }); // Reset input field
+                location.reload();
             },
         });
     };

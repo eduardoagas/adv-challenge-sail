@@ -59,9 +59,9 @@ class TarefaRepository
         $tarefa->delete();
     }
 
-    public function atualizarStatus(Tarefa $tarefa, bool $status)
+    public function atualizarStatus(Tarefa $tarefa)
     {
-        $tarefa->concluida = $status;
+        $tarefa->concluida = true;
         $tarefa->save();
         return $tarefa;
     }
