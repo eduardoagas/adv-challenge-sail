@@ -32,7 +32,7 @@ export default function Register() {
 
                     <TextInput
                         id="name"
-                        name="name"
+                        name="nome"
                         value={data.name}
                         className="mt-1 block w-full"
                         autoComplete="name"
@@ -67,7 +67,7 @@ export default function Register() {
                     <TextInput
                         id="password"
                         type="password"
-                        name="password"
+                        name="senha"
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
@@ -87,7 +87,7 @@ export default function Register() {
                     <TextInput
                         id="password_confirmation"
                         type="password"
-                        name="password_confirmation"
+                        name="confirmar senha"
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
@@ -108,7 +108,7 @@ export default function Register() {
                         href={route('login')}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                     >
-                        Already registered?
+                        Já possui um login?
                     </Link>
 
                     <PrimaryButton className="ms-4" disabled={processing}>

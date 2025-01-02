@@ -62,7 +62,7 @@ export default function Login({
                     <TextInput
                         id="password"
                         type="password"
-                        name="password"
+                        name="senha"
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="current-password"
@@ -75,7 +75,7 @@ export default function Login({
                 <div className="mt-4 block">
                     <label className="flex items-center">
                         <Checkbox
-                            name="remember"
+                            name="lembrar"
                             checked={data.remember}
                             onChange={(e) =>
                                 setData('remember', e.target.checked)
@@ -93,12 +93,12 @@ export default function Login({
                             href={route('password.request')}
                             className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                         >
-                            Forgot your password?
+                            Esqueceu sua senha?
                         </Link>
                     )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                        Entrar
                     </PrimaryButton>
                 </div>
             </form>
