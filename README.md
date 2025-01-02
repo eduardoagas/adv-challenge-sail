@@ -84,7 +84,7 @@ Aplicação fullstack para gerenciamento de tarefas, desenvolvida para o desafio
 
 ### Funcionalidades
 
-- O usuário pode fazer login e se registrar pela tela de login.
+- O usuário pode fazer login e se registrar pela tela de login e de register.
 - O usuário pode acessar a lista de tarefas que lhe estão atribuídas clicando na aba tarefas.
 - O usuário pode criar, editar e marcar como concluídas as tarefas interagindo com a página listar_tarefas.
 - O usuário pode acessar a descrição detalhada de cada tarefa clicando sobre o nome da mesma.
