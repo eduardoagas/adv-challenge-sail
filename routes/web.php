@@ -15,7 +15,7 @@ Route::get('/', function () {
         return redirect()->route('tarefas.listar'); // Redirect logged-in users to the tarefas.listar route
     }
 
-    return redirect()->route('login'); // Redirect guests to the login page
+    return redirect()->route('register'); // Redirect guests to the login page
 });
 
 Route::get('/dashboard', function () {
